@@ -1,0 +1,79 @@
+@page "{id:int?}"
+@model TicketWave.Pages_Events.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>EventTickets</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventListUserID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventListUserID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventDateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventLocation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventLocation)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventTicketPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventTicketPrice)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventNumOfTicket)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventNumOfTicket)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventUserContactEmail)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventUserContactEmail)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventBuyerID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventBuyerID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventBuyOfferAccepted)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventBuyOfferAccepted)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.EventTickets.EventId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

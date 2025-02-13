@@ -1,0 +1,82 @@
+@page "{id:int?}"
+@model TicketWave.Pages_Events.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>EventTickets</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventListUserID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventListUserID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventDateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventLocation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventLocation)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventTicketPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventTicketPrice)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventNumOfTicket)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventNumOfTicket)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventUserContactEmail)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventUserContactEmail)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventBuyerID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventBuyerID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EventTickets.EventBuyOfferAccepted)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EventTickets.EventBuyOfferAccepted)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="EventTickets.EventId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

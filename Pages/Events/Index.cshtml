@@ -1,0 +1,98 @@
+@page "{searchString?}"
+@model TicketWave.Pages_Events.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<form>
+    <p>
+        <label>Title: <input type="text" asp-for="SearchString" /></label>
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EventTickets[0].EventListUserID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventTickets[0].EventDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventTickets[0].EventName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventTickets[0].EventLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventTickets[0].EventTicketPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventTickets[0].EventNumOfTicket)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventTickets[0].EventUserContactEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventTickets[0].EventDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventTickets[0].EventBuyerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventTickets[0].EventBuyOfferAccepted)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.EventTickets) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventListUserID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventTicketPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventNumOfTicket)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventUserContactEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventBuyerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventBuyOfferAccepted)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.EventId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.EventId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.EventId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
