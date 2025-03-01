@@ -8,7 +8,11 @@ public class EventTickets
 {
     [Key]
     public int EventId { get; set; }
-    public int EventListUserID { get; set; }
+    public int EventListUserID { get; set; }  // Seller ID
+
+    [ForeignKey("EventListUserID")]
+    public User Seller { get; set; }  // ✅ Foreign key reference
+
     [Display(Name = "When?")]
     [DataType(DataType.Date)]
     public DateTime EventDateTime { get; set; }
@@ -24,6 +28,6 @@ public class EventTickets
     public string? EventUserContactEmail { get; set; }
     [Display(Name = "Enter an informative description of the event")]
     public string? EventDescription { get; set; }
-    public int EventBuyerID { get; set; }
+    public int? EventBuyerID { get; set; }
     public bool EventBuyOfferAccepted { get; set; }
 }

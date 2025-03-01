@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TicketWave.Data;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ else
         options.UseSqlServer(builder.Configuration.GetConnectionString("ProductionTicketWaveContext")));
 }
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,6 +32,15 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+// ✅ Call SeedData to ensure test data is inserted
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    SeedData.Initialize(services);
+}
+
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

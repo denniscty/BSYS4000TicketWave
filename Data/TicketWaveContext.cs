@@ -12,6 +12,10 @@ namespace TicketWave.Data
         public TicketWaveContext(DbContextOptions<TicketWaveContext> options)
             : base(options) { }
 
+        public DbSet<User> Users { get; set; }
+        
         public DbSet<EventTickets> EventTickets { get; set; }  // Ensure your model is added here
+
+
     }
 }
