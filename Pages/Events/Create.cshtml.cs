@@ -10,14 +10,9 @@ using TicketWave.Models;
 
 namespace TicketWave.Pages_Events
 {
-    public class CreateModel : PageModel
+    public class CreateModel(TicketWave.Data.TicketWaveContext context) : PageModel
     {
-        private readonly TicketWave.Data.TicketWaveContext _context;
-
-        public CreateModel(TicketWave.Data.TicketWaveContext context)
-        {
-            _context = context;
-        }
+        private readonly TicketWave.Data.TicketWaveContext _context = context;
 
         public IActionResult OnGet()
         {
@@ -32,6 +27,11 @@ namespace TicketWave.Pages_Events
         {
             if (!ModelState.IsValid)
             {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    // Log or display the error message
+                    Console.WriteLine(error.ErrorMessage);
+                }
                 return Page();
             }
 

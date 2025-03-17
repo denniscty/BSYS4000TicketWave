@@ -2,91 +2,59 @@
 @model TicketWave.Pages_Events.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index";    ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Events</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create" class="btn btn-primary">Create New</a>
 </p>
 
-<form>
-    <p>
-        <label>Title: <input type="text" asp-for="SearchString" /></label>
-        <input type="submit" value="Filter" />
-    </p>
+<!-- 🟢 Search Form -->
+<form method="get" class="mb-3">
+    <div class="form-group">
+        <label for="SearchString">Search by Event Name:</label>
+        <input type="text" asp-for="SearchString" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-secondary mt-2">Filter</button>
 </form>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EventTickets[0].EventListUserID)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
+                    Event Name
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EventTickets[0].EventDateTime)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">
+                    Event Date
+                </a>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventTickets[0].EventName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventTickets[0].EventLocation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventTickets[0].EventTicketPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventTickets[0].EventNumOfTicket)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventTickets[0].EventUserContactEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventTickets[0].EventDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventTickets[0].EventBuyerID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EventTickets[0].EventBuyOfferAccepted)
-            </th>
-            <th></th>
+            <th>Location</th>
+            <th>Price</th>
+            <th>Tickets Available</th>
+            <th>Contact Email</th>
+            <th>Description</th>
+            <th>Buyer ID</th>
+            <th>Offer Accepted</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.EventTickets) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventListUserID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventLocation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventTicketPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventNumOfTicket)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventUserContactEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventBuyerID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EventBuyOfferAccepted)
-            </td>
+            <td>@Html.DisplayFor(modelItem => item.EventName)</td>
+            <td>@Html.DisplayFor(modelItem => item.EventDateTime)</td>
+            <td>@Html.DisplayFor(modelItem => item.EventLocation)</td>
+            <td>@Html.DisplayFor(modelItem => item.EventTicketPrice)</td>
+            <td>@Html.DisplayFor(modelItem => item.EventNumOfTicket)</td>
+            <td>@Html.DisplayFor(modelItem => item.EventUserContactEmail)</td>
+            <td>@Html.DisplayFor(modelItem => item.EventDescription)</td>
+            <td>@Html.DisplayFor(modelItem => item.EventBuyerID)</td>
+            <td>@Html.DisplayFor(modelItem => item.EventBuyOfferAccepted)</td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.EventId">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.EventId">Details</a> |
@@ -96,3 +64,13 @@
 }
     </tbody>
 </table>
+
+<!-- 🟢 Pagination Controls -->
+@if (Model.EventTickets.HasPreviousPage)
+{
+    <a asp-page="./Index" asp-route-pageIndex="@(Model.EventTickets.PageIndex - 1)" class="btn btn-secondary">Previous</a>
+}
+@if (Model.EventTickets.HasNextPage)
+{
+    <a asp-page="./Index" asp-route-pageIndex="@(Model.EventTickets.PageIndex + 1)" class="btn btn-secondary">Next</a>
+}

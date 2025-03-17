@@ -10,8 +10,8 @@ public class EventTickets
     public int EventId { get; set; }
     public int EventListUserID { get; set; }  // Seller ID
 
-    [ForeignKey("EventListUserID")]
-    public User Seller { get; set; }  // ✅ Foreign key reference
+    //[ForeignKey("EventListUserID")]
+    //public User Seller { get; set; }  // ✅ Foreign key reference
 
     [Display(Name = "When?")]
     [DataType(DataType.Date)]

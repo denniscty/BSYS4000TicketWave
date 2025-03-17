@@ -11,14 +11,9 @@ using TicketWave.Models;
 
 namespace TicketWave.Pages_Events
 {
-    public class EditModel : PageModel
+    public class EditModel(TicketWave.Data.TicketWaveContext context) : PageModel
     {
-        private readonly TicketWave.Data.TicketWaveContext _context;
-
-        public EditModel(TicketWave.Data.TicketWaveContext context)
-        {
-            _context = context;
-        }
+        private readonly TicketWave.Data.TicketWaveContext _context = context;
 
         [BindProperty]
         public EventTickets EventTickets { get; set; } = default!;

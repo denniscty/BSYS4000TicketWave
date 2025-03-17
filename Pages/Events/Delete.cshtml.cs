@@ -10,14 +10,9 @@ using TicketWave.Models;
 
 namespace TicketWave.Pages_Events
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel(TicketWave.Data.TicketWaveContext context) : PageModel
     {
-        private readonly TicketWave.Data.TicketWaveContext _context;
-
-        public DeleteModel(TicketWave.Data.TicketWaveContext context)
-        {
-            _context = context;
-        }
+        private readonly TicketWave.Data.TicketWaveContext _context = context;
 
         [BindProperty]
         public EventTickets EventTickets { get; set; } = default!;

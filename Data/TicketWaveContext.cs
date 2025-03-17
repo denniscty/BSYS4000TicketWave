@@ -7,11 +7,8 @@ using TicketWave.Models; // Ensure this namespace is correct
 
 namespace TicketWave.Data
 {
-    public class TicketWaveContext : DbContext
+    public class TicketWaveContext(DbContextOptions<TicketWaveContext> options) : DbContext(options)
     {
-        public TicketWaveContext(DbContextOptions<TicketWaveContext> options)
-            : base(options) { }
-
         public DbSet<User> Users { get; set; }
         
         public DbSet<EventTickets> EventTickets { get; set; }  // Ensure your model is added here

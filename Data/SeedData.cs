@@ -21,7 +21,9 @@ namespace TicketWave.Data
                 {
                     context.Users.AddRange(
                         new User { UserId = 1, UserName = "seller1", Email = "seller1@email.com", PasswordHash = "hashedpassword1" },
-                        new User { UserId = 2, UserName = "buyer1", Email = "buyer1@email.com", PasswordHash = "hashedpassword2" }
+                        new User { UserId = 2, UserName = "buyer1", Email = "buyer1@email.com", PasswordHash = "hashedpassword2" },
+                        new User { UserId = 3, UserName = "seller2", Email = "seller2@email.com", PasswordHash = "hashedpassword3" },
+                        new User { UserId = 4, UserName = "buyer2", Email = "buyer2@email.com", PasswordHash = "hashedpassword4" }
                     );
                     context.SaveChanges();
                 }
