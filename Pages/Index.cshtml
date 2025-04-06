@@ -1,10 +1,123 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "TicketWave - Marketplace";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about TicketWave <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Welcome Section -->
+<div class="welcome-container">
+    <h1 class="display-4">Welcome to TicketWave</h1>
+    <p class="lead">Discover and buy tickets to your favorite events. Get started by browsing available events!</p>
+
+    <!-- Get Started Button -->
+    <a href="/Events/Index" class="btn btn-primary btn-lg">Get Started</a>
 </div>
+
+<!-- Custom Styles -->
+<style>
+    /* Base styles */
+    body {
+        background-color: #f0f8ff; /* Light blue background */
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+
+    /* Welcome Section */
+    .welcome-container {
+        text-align: center;
+        margin-top: 150px;
+        padding: 20px;
+        background-color: #e0f7fa; /* Light cyan background */
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .display-4 {
+        font-size: 3.5rem;
+        font-weight: 600;
+        color: #0288d1; /* Blue text */
+    }
+
+    .lead {
+        font-size: 1.25rem;
+        color: #0288d1; /* Blue text */
+        margin-bottom: 20px;
+    }
+
+    .btn-lg {
+        padding: 15px 35px;
+        font-size: 18px;
+        border-radius: 50px;
+        box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #0288d1; /* Light blue button */
+        border-color: #0288d1;
+    }
+
+        .btn-primary:hover {
+            background-color: #01579b; /* Darker blue */
+            border-color: #01579b;
+        }
+
+    /* Background Image Section */
+    .bg-image-container {
+        position: relative;
+        height: 400px;
+        overflow: hidden;
+    }
+
+    .bg-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.5);
+    }
+
+    /* Callout Section */
+    .callout-container {
+        background-color: #ffffff;
+        padding: 40px;
+        text-align: center;
+        border-radius: 8px;
+        margin-top: 40px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+        .callout-container h3 {
+            font-size: 2rem;
+            color: #0288d1; /* Blue heading */
+            font-weight: 700;
+        }
+
+        .callout-container p {
+            font-size: 1.1rem;
+            color: #0288d1; /* Blue text */
+            margin-bottom: 20px;
+        }
+
+    .btn-lightblue {
+        background-color: #81d4fa; /* Lighter blue button */
+        border-color: #81d4fa;
+    }
+
+        .btn-lightblue:hover {
+            background-color: #4fa3d1; /* Darker light blue */
+            border-color: #4fa3d1;
+        }
+
+    /* Footer Section */
+    footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #0288d1; /* Blue footer */
+        color: #fff;
+        margin-top: 60px;
+    }
+
+        footer p {
+            font-size: 1rem;
+        }
+</style>

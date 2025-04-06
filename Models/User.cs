@@ -1,24 +1,22 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
-public class User
+namespace TicketWave.Models
 {
-    [Key]
-    public int UserId { get; set; }
+    public enum UserRole
+{
+    Admin,
+    User,
+    Moderator
+}
+    public class User : IdentityUser
+    {
+        // You can now remove: UserId (already in IdentityUser), PasswordHash, etc.
+        
+        [Display(Name = "User Type")]
+        public string Role { get; set; } = "User";
 
-    [Required]
-    [Display(Name = "Username")]
-    public string UserName { get; set; } = string.Empty;
-
-    [Required]
-    [EmailAddress]
-    [Display(Name = "Email")]
-    public string Email { get; set; } = string.Empty;
-
-    [Required]
-    [DataType(DataType.Password)]
-    public string PasswordHash { get; set; } = string.Empty;  // Hashed Password
-
-    [Required]
-    [Display(Name = "User Type")]
-    public string Role { get; set; } = "User";  // Default role
+        // Add custom fields if needed (PhoneNumber already exists in base class)
+        // public string SomeOtherField { get; set; }
+    }  
 }

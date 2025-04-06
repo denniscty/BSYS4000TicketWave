@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using TicketWave.Data;
 using TicketWave.Models;
@@ -33,14 +36,31 @@ namespace TicketWave.Pages_Events
         public async Task OnGetAsync()
         {
             //EventTickets = await _context.EventTickets.ToListAsync();
-            var eventSearch = from e in _context.EventTickets
-                select e;
-            if (!string.IsNullOrEmpty(SearchString))
+            //var eventSearch = from e in _context.EventTickets
+            //    select e;
+            //if (!string.IsNullOrEmpty(SearchString))
+            //{
+            //    eventSearch = eventSearch.Where(s => s.EventName.Contains(SearchString));
+            //}
+            //
+            // EventTickets = await eventSearch.ToListAsync();
+            if (_context?.EventTickets != null)
             {
-                eventSearch = eventSearch.Where(s => s.EventName.Contains(SearchString));
+                var eventSearch = from e in _context.EventTickets
+                                select e;
+
+                if (!string.IsNullOrEmpty(SearchString))
+                {
+                    eventSearch = eventSearch.Where(s => s.EventName.Contains(SearchString));
+                }
+
+                EventTickets = await eventSearch.ToListAsync();
+            }
+            else
+            {
+                EventTickets = new List<EventTickets>(); // fallback if somehow null
             }
 
-            EventTickets = await eventSearch.ToListAsync();
         }
     }
 }

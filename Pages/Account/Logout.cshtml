@@ -1,0 +1,22 @@
+﻿@page
+@model TicketWave.Pages.Account.LogoutModel
+@{
+    ViewData["Title"] = "Logout";
+}
+
+<div class="logout-container">
+    <h2>Logging Out...</h2>
+</div>
+
+<script>
+    document.forms[0].submit(); // Auto-submit the logout form
+</script>
+
+<form method="post"></form>
+
+<style>
+    .logout-container {
+        text-align: center;
+        padding: 50px;
+    }
+</style>

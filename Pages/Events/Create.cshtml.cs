@@ -32,6 +32,11 @@ namespace TicketWave.Pages_Events
         {
             if (!ModelState.IsValid)
             {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    // Log or display the error message
+                    Console.WriteLine(error.ErrorMessage);
+                }
                 return Page();
             }
 

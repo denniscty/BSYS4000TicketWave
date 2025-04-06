@@ -1,50 +1,68 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;
-using TicketWave.Models;  // Ensure the correct namespace
+using System.Threading.Tasks;
+using TicketWave.Models;
 
 namespace TicketWave.Data
 {
     public static class SeedData
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static async Task Initialize(IServiceProvider serviceProvider)
         {
-            using (var context = new TicketWaveContext(
-                serviceProvider.GetRequiredService<DbContextOptions<TicketWaveContext>>()))
+            var context = serviceProvider.GetRequiredService<TicketWaveContext>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+            // Ensure database exists and apply any pending migrations
+            context.Database.Migrate();
+
+            // ✅ Seed Users
+            if (!context.Users.Any())
             {
-                // ✅ Ensure the database exists
-                context.Database.EnsureCreated();
-
-                // ✅ Check if Users exist, if not, add test users
-                if (!context.Users.Any())
+                var users = new[]
                 {
-                    context.Users.AddRange(
-                        new User { UserId = 1, UserName = "seller1", Email = "seller1@email.com", PasswordHash = "hashedpassword1" },
-                        new User { UserId = 2, UserName = "buyer1", Email = "buyer1@email.com", PasswordHash = "hashedpassword2" }
-                    );
-                    context.SaveChanges();
+                    new { UserName = "seller1", Email = "seller1@email.com", Password = "Test@123" },
+                    new { UserName = "buyer1", Email = "buyer1@email.com", Password = "Test@123" },
+                    new { UserName = "seller2", Email = "seller2@email.com", Password = "Test@123" },
+                    new { UserName = "buyer2", Email = "buyer2@email.com", Password = "Test@123" }
+                };
+
+                foreach (var u in users)
+                {
+                    var user = new User
+                    {
+                        UserName = u.UserName,
+                        Email = u.Email,
+                        Role = "User"
+                    };
+
+                    await userManager.CreateAsync(user, u.Password);
                 }
+            }
 
-                // ✅ Check if Events exist, if not, add test events
-                if (!context.EventTickets.Any())
+            // ✅ Seed EventTickets
+            if (!context.EventTickets.Any())
+            {
+                var seller = await userManager.FindByNameAsync("seller1");
+                if (seller != null)
                 {
-                    context.EventTickets.AddRange(
-                        new EventTickets
-                        {
-                            EventName = "Rock Concert",
-                            EventListUserID = 1,  // ✅ Assign existing UserId (Seller)
-                            EventDateTime = DateTime.Now.AddDays(30),
-                            EventLocation = "Downtown Stadium",
-                            EventTicketPrice = 75.00m,
-                            EventNumOfTicket = 2,
-                            EventUserContactEmail = "seller1@email.com",
-                            EventDescription = "Exciting live rock concert!",
-                            EventBuyerID = null,  // No buyer yet
-                            EventBuyOfferAccepted = false
-                        }
-                    );
-                    context.SaveChanges();
+                    context.EventTickets.Add(new EventTickets
+                    {
+                        EventName = "Rock Concert",
+                        EventListUserID = int.Parse(seller.Id), // Might require adjustment if EventListUserID was int
+                        EventDateTime = DateTime.Now.AddDays(30),
+                        EventLocation = "Downtown Stadium",
+                        EventTicketPrice = 75.00m,
+                        EventNumOfTicket = 2,
+                        EventUserContactEmail = seller.Email,
+                        EventDescription = "Exciting live rock concert!",
+                        EventBuyerID = null,
+                        EventBuyOfferAccepted = false
+                    });
+
+                    await context.SaveChangesAsync();
                 }
             }
         }
