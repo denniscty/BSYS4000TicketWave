@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TicketWave.Data;
 using TicketWave.Models;
+using TicketWave.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
     });
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<OfferService>();
 
 // -------------------
 // 🔧 Build App

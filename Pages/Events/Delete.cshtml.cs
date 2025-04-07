@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using TicketWave.Data;
 using TicketWave.Models;
 
-namespace TicketWave.Pages_Events
+namespace TicketWave.Pages.Events
 {
     public class DeleteModel : PageModel
     {
-        private readonly TicketWave.Data.TicketWaveContext _context;
+        private readonly TicketWaveContext _context;
 
-        public DeleteModel(TicketWave.Data.TicketWaveContext context)
+        public DeleteModel(TicketWaveContext context)
         {
             _context = context;
         }
@@ -25,34 +22,25 @@ namespace TicketWave.Pages_Events
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var eventtickets = await _context.EventTickets.FirstOrDefaultAsync(m => m.EventId == id);
+            var eventTickets = await _context.EventTickets.FirstOrDefaultAsync(m => m.EventId == id);
+            if (eventTickets == null)
+                return NotFound();
 
-            if (eventtickets is not null)
-            {
-                EventTickets = eventtickets;
-
-                return Page();
-            }
-
-            return NotFound();
+            EventTickets = eventTickets;
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var eventtickets = await _context.EventTickets.FindAsync(id);
-            if (eventtickets != null)
+            var eventTickets = await _context.EventTickets.FindAsync(id);
+            if (eventTickets != null)
             {
-                EventTickets = eventtickets;
-                _context.EventTickets.Remove(EventTickets);
+                _context.EventTickets.Remove(eventTickets);
                 await _context.SaveChangesAsync();
             }
 

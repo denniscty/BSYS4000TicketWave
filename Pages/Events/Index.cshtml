@@ -1,115 +1,37 @@
-﻿@page "{searchString?}"
-@model TicketWave.Pages_Events.IndexModel
-
+﻿@page
+@model TicketWave.Pages.Events.IndexModel
 @{
-    ViewData["Title"] = "Event Marketplace";
+    ViewData["Title"] = "Browse Events";
 }
 
-<h1>Event Marketplace</h1>
+<h1>Events</h1>
 
-<!-- 🟢 Search Form -->
-<form method="get" class="mb-3">
-    <div class="form-group">
-        <label for="SearchString">Search by Event Name:</label>
-        <input type="text" name="searchString" class="form-control" placeholder="Search any part of the name..." value="@Request.Query["searchString"]" />
-    </div>
-    <button type="submit" class="btn btn-secondary mt-2">Filter</button>
+<form method="get" class="mb-4">
+    <input type="text" name="SearchString" value="@Model.SearchString" class="form-control" placeholder="Search events..." />
 </form>
 
-<!-- Event Grid -->
-<div class="event-grid">
-    @foreach (var item in Model.EventTickets)
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    @foreach (var ticket in Model.EventTickets)
     {
-        <!-- Use a default image for every event -->
-        <div class="event-card">
-            <img src="~/images/pexels-vishnurnair-1105666.jpg"
-                 alt="Event Image" class="event-image rounded-top" />
+        <div class="col">
+            <div class="card shadow-sm h-100">
+                @if (!string.IsNullOrEmpty(ticket.ImageFileName))
+                {
+                    <img src="~/images/events/@ticket.ImageFileName" class="card-img-top" style="height: 200px; object-fit: cover;" />
+                }
 
-            <div class="event-info">
-                <h3>@item.EventName</h3>
-                <p class="location"><i class="fas fa-map-marker-alt"></i> @item.EventLocation</p>
+                <div class="card-body">
+                    <h5 class="card-title">@ticket.EventName</h5>
+                    <p class="card-text text-muted">@ticket.EventLocation</p>
+                    <p class="card-text">@ticket.EventDateTime.ToShortDateString()</p>
+                    <p class="card-text">
+                        <strong>$@ticket.EventTicketPrice</strong> &mdash;
+                        <span class="badge bg-@(ticket.ListingType == "Buy" ? "info" : "success")">@ticket.ListingType</span>
+                    </p>
 
-                <!-- Enhanced Price Styling -->
-                <p class="price"><i class="fas fa-tag"></i> <span class="price-value">$@item.EventTicketPrice</span></p>
-
-                <p class="description">@item.EventDescription</p>
-                <a asp-page="./Details" asp-route-id="@item.EventId" class="btn btn-secondary">View Details</a>
+                    <a asp-page="Details" asp-route-id="@ticket.EventId" class="btn btn-primary">View Details</a>
+                </div>
             </div>
         </div>
     }
 </div>
-
-<!-- Styling -->
-<style>
-    .event-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-        padding: 20px;
-    }
-
-    .event-card {
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        transition: transform 0.3s ease;
-    }
-
-        .event-card:hover {
-            transform: scale(1.05);
-        }
-
-    .event-image {
-        width: 100%;
-        height: 200px;
-        object-fit: cover;
-    }
-
-    .event-info {
-        padding: 15px;
-        text-align: center;
-    }
-
-        .event-info h3 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-    .location {
-        font-size: 1rem;
-        color: #555;
-    }
-
-    .price {
-        font-size: 1.25rem;
-        font-weight: bold;
-        color: #28a745;
-        background-color: #f1f8f3;
-        padding: 8px 12px;
-        border-radius: 5px;
-        margin-top: 10px;
-        display: inline-block;
-    }
-
-    .description {
-        font-size: 0.9rem;
-        color: #777;
-        margin: 10px 0;
-    }
-
-    .btn-secondary {
-        background-color: #28a745;
-        color: #fff;
-        padding: 10px 20px;
-        border-radius: 25px;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-        .btn-secondary:hover {
-            background-color: #218838;
-        }
-</style>
-

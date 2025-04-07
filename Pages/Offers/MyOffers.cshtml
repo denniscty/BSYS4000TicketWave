@@ -1,0 +1,70 @@
+@page
+@model TicketWave.Pages.Offers.MyOffersModel
+@using TicketWave.Models
+@{
+    ViewData["Title"] = "My Offers";
+}
+
+<h2>My Submitted Offers</h2>
+
+@if (!Model.Offers.Any())
+{
+    <p class="text-muted">You haven’t submitted any offers yet.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Contact</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var offer in Model.Offers)
+            {
+                <tr>
+                    <td>@offer.EventName</td>
+                    <td>@offer.EventDateTime.ToString("g")</td>
+                    <td>@offer.Location</td>
+                    <td>
+                        <span class="badge bg-@(offer.ListingType == "Buy" ? "primary" : "success")">
+                            @offer.ListingType
+                        </span>
+                    </td>
+                    <td>
+                        @switch (offer.Status)
+                        {
+                            case OfferStatus.Pending:
+                                <span class="badge bg-secondary">Pending</span>
+                                break;
+                            case OfferStatus.Accepted:
+                                <span class="badge bg-success">Accepted</span>
+                                break;
+                            case OfferStatus.Rejected:
+                                <span class="badge bg-danger">Rejected</span>
+                                break;
+                            case OfferStatus.Expired:
+                                <span class="badge bg-warning text-dark">Expired</span>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(offer.ContactEmail))
+                        {
+                            <span class="text-primary">@offer.ContactEmail</span>
+                        }
+                        else
+                        {
+                            <span class="text-muted">—</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

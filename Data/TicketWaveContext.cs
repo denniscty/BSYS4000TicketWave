@@ -12,5 +12,7 @@ namespace TicketWave.Data
 
 
             public DbSet<EventTickets> EventTickets { get; set; }
+            public DbSet<EventOffer> EventOffers { get; set; } = default!;
+
     }
 }

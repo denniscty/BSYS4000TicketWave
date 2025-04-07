@@ -1,0 +1,95 @@
+@page
+@model TicketWave.Pages.Offers.OffersInboxModel
+@using TicketWave.Models
+@{
+    ViewData["Title"] = "Your Incoming Offers";
+}
+
+<h2>Your Incoming Offers</h2>
+
+@if (TempData["OfferSuccess"] is string successMsg)
+{
+    <div class="alert alert-success">@successMsg</div>
+}
+
+<form method="get" class="mb-3">
+    <select name="FilterType" class="form-select" onchange="this.form.submit()">
+        <option value="">All Listings</option>
+        <option value="Buy" selected="@("Buy" == Model.FilterType)">Buy</option>
+        <option value="Sell" selected="@("Sell" == Model.FilterType)">Sell</option>
+    </select>
+</form>
+
+@if (Model.OfferDetails.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Listing Type</th>
+                <th>Offered By</th>
+                <th>Offer Date</th>
+                <th>Action</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var offer in Model.OfferDetails)
+            {
+                <tr>
+                    <td>@offer.EventName</td>
+                    <td>
+                        <span class="badge bg-@(offer.ListingType == "Buy" ? "info" : "success")">
+                            @offer.ListingType
+                        </span>
+                    </td>
+                    <td>@offer.OfferedByUserName</td>
+                    <td>@offer.OfferDate.ToLocalTime().ToString("g")</td>
+                    <td>
+                        @if (offer.Status == OfferStatus.Pending)
+                        {
+                            <form method="post" asp-page-handler="Accept" asp-route-id="@offer.OfferId" class="d-inline">
+                                <button class="btn btn-sm btn-success">Accept</button>
+                            </form>
+                            <form method="post" asp-page-handler="Reject" asp-route-id="@offer.OfferId" class="d-inline">
+                                <button class="btn btn-sm btn-danger">Reject</button>
+                            </form>
+                        }
+                        else if (offer.Status == OfferStatus.Accepted)
+                        {
+                            <form method="post" asp-page-handler="Reopen" asp-route-eventId="@offer.EventId" class="d-inline">
+                                <button class="btn btn-sm btn-warning">Reopen Event</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-muted">—</span>
+                        }
+                    </td>
+                    <td>
+                        @switch (offer.Status)
+                        {
+                            case OfferStatus.Pending:
+                                <span class="badge bg-secondary">Pending</span>
+                                break;
+                            case OfferStatus.Accepted:
+                                <span class="badge bg-success">Accepted</span>
+                                break;
+                            case OfferStatus.Rejected:
+                                <span class="badge bg-danger">Rejected</span>
+                                break;
+                            case OfferStatus.Expired:
+                                <span class="badge bg-warning text-dark">Expired</span>
+                                break;
+                        }
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="text-muted">You haven’t received any offers yet.</p>
+}

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TicketWave.Data;
 
@@ -10,9 +11,11 @@ using TicketWave.Data;
 namespace TicketWave.Migrations
 {
     [DbContext(typeof(TicketWaveContext))]
-    partial class TicketWaveContextModelSnapshot : ModelSnapshot
+    [Migration("20250406213037_AddListingTypeAndImageToEventTickets")]
+    partial class AddListingTypeAndImageToEventTickets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
@@ -145,34 +148,6 @@ namespace TicketWave.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("TicketWave.Models.EventOffer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("OfferDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("OfferedByUserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("OfferedByUserId");
-
-                    b.ToTable("EventOffers");
-                });
-
             modelBuilder.Entity("TicketWave.Models.EventTickets", b =>
                 {
                     b.Property<int>("EventId")
@@ -182,8 +157,8 @@ namespace TicketWave.Migrations
                     b.Property<bool>("EventBuyOfferAccepted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("EventBuyerID")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("EventBuyerID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("EventDateTime")
                         .HasColumnType("TEXT");
@@ -191,9 +166,8 @@ namespace TicketWave.Migrations
                     b.Property<string>("EventDescription")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("EventListUserID")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("EventListUserID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("EventLocation")
                         .HasColumnType("TEXT");
@@ -339,25 +313,6 @@ namespace TicketWave.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TicketWave.Models.EventOffer", b =>
-                {
-                    b.HasOne("TicketWave.Models.EventTickets", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TicketWave.Models.User", "OfferedByUser")
-                        .WithMany()
-                        .HasForeignKey("OfferedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("OfferedByUser");
                 });
 #pragma warning restore 612, 618
         }

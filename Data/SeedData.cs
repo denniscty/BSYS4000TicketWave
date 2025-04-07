@@ -51,7 +51,7 @@ namespace TicketWave.Data
                     context.EventTickets.Add(new EventTickets
                     {
                         EventName = "Rock Concert",
-                        EventListUserID = int.Parse(seller.Id), // Might require adjustment if EventListUserID was int
+                        EventListUserID = seller.Id!,
                         EventDateTime = DateTime.Now.AddDays(30),
                         EventLocation = "Downtown Stadium",
                         EventTicketPrice = 75.00m,

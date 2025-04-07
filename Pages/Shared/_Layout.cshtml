@@ -18,6 +18,9 @@
             {
                 <span class="navbar-text">Hello, @User.Identity.Name!</span>
                 <a class="btn btn-outline-primary" asp-page="/Events/Create">List Event</a>
+                <a class="nav-link @(ViewContext.ActionDescriptor.DisplayName!.Contains("OffersInbox") ? "active" : "")"
+   asp-page="/Offers/OffersInbox">Offers Inbox</a>
+                <a class="nav-link" asp-page="/Offers/MyOffers">My Offers</a>
                 <form method="post" asp-page="/Account/Logout" class="d-inline">
                     <button type="submit" class="btn btn-outline-danger">Logout</button>
                 </form>

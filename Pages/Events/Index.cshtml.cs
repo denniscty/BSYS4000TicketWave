@@ -1,66 +1,44 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using TicketWave.Data;
 using TicketWave.Models;
 
-namespace TicketWave.Pages_Events
+namespace TicketWave.Pages.Events
 {
     public class IndexModel : PageModel
     {
-        private readonly TicketWave.Data.TicketWaveContext _context;
+        private readonly TicketWaveContext _context;
 
-        public IndexModel(TicketWave.Data.TicketWaveContext context)
+        public IndexModel(TicketWaveContext context)
         {
             _context = context;
         }
 
-        public IList<EventTickets> EventTickets { get;set; } = default!;
+        public IList<EventTickets> EventTickets { get; set; } = new List<EventTickets>();
 
-            [BindProperty(SupportsGet = true)]
+        [BindProperty(SupportsGet = true)]
         public string? SearchString { get; set; }
 
         public SelectList? EventName { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public string? SearchEvent { get; set; } = string.Empty;
-
         public async Task OnGetAsync()
         {
-            //EventTickets = await _context.EventTickets.ToListAsync();
-            //var eventSearch = from e in _context.EventTickets
-            //    select e;
-            //if (!string.IsNullOrEmpty(SearchString))
-            //{
-            //    eventSearch = eventSearch.Where(s => s.EventName.Contains(SearchString));
-            //}
-            //
-            // EventTickets = await eventSearch.ToListAsync();
             if (_context?.EventTickets != null)
             {
-                var eventSearch = from e in _context.EventTickets
-                                select e;
+                var query = _context.EventTickets.AsQueryable();
 
                 if (!string.IsNullOrEmpty(SearchString))
                 {
-                    eventSearch = eventSearch.Where(s => s.EventName.Contains(SearchString));
+                    query = query.Where(e => e.EventName!.Contains(SearchString));
                 }
 
-                EventTickets = await eventSearch.ToListAsync();
+                EventTickets = await query.ToListAsync();
             }
-            else
-            {
-                EventTickets = new List<EventTickets>(); // fallback if somehow null
-            }
-
         }
     }
 }
