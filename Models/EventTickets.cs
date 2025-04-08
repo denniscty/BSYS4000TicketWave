@@ -33,9 +33,11 @@ public class EventTickets
 
     [Display(Name = "How much?")]
     [Column(TypeName = "decimal(18,2)")]
+    [Range(0, double.MaxValue, ErrorMessage = "Ticket price must be 0 or greater.")]
     public decimal EventTicketPrice { get; set; }
 
     [Display(Name = "How many tickets?")]
+    [Range(1, int.MaxValue, ErrorMessage = "Must be 1 or bigger! What're you even trying to do with 0 ticket???")]
     public int EventNumOfTicket { get; set; }
 
     [Display(Name = "email address that will be used by others to contact you")]

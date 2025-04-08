@@ -97,16 +97,16 @@ namespace TicketWave.Pages.Events
             //{
                 //Console.WriteLine("❌ DB save failed: " + ex.Message);
             //}
-            Console.WriteLine($"📝 Creating event: {EventTickets.EventName}");
-            Console.WriteLine($"📅 Date: {EventTickets.EventDateTime}");
-            Console.WriteLine($"👤 UserId: {EventTickets.EventListUserID}");
-            Console.WriteLine($"✔ OfferAccepted: {EventTickets.EventBuyOfferAccepted}");
-            Console.WriteLine($"🎯 ListingType: {EventTickets.ListingType}");
+            //Console.WriteLine($"📝 Creating event: {EventTickets.EventName}");
+            //Console.WriteLine($"📅 Date: {EventTickets.EventDateTime}");
+            //Console.WriteLine($"👤 UserId: {EventTickets.EventListUserID}");
+            //Console.WriteLine($"✔ OfferAccepted: {EventTickets.EventBuyOfferAccepted}");
+            //Console.WriteLine($"🎯 ListingType: {EventTickets.ListingType}");
 
             if (!ModelState.IsValid)
             {
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                    Console.WriteLine($"❌ Validation Error: {error.ErrorMessage}");
+                    //Console.WriteLine($"❌ Validation Error: {error.ErrorMessage}");
 
                 return Page();
             }

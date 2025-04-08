@@ -50,13 +50,15 @@ namespace TicketWave.Pages.Events
 
             if (!string.IsNullOrEmpty(SearchString))
             {
-                query = query.Where(e => e.EventName != null && e.EventName.Contains(SearchString!));
+                query = query.Where(e =>
+                    e.EventName != null &&
+                    e.EventName.ToLower().Contains(SearchString!));
             }
 
             query = SortOrder switch
             {
-                "name_asc" => query.OrderBy(e => e.EventName),
-                "name_desc" => query.OrderByDescending(e => e.EventName),
+                "name_asc" => query.OrderBy(e => e.EventName.ToLower()),
+                "name_desc" => query.OrderByDescending(e => e.EventName.ToLower()),
                 "date_desc" => query.OrderByDescending(e => e.EventDateTime),
                 _ => query.OrderBy(e => e.EventDateTime), // default date_asc
             };
