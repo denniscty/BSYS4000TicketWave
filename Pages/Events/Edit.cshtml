@@ -1,89 +1,85 @@
-@page "{id:int?}"
+@page
 @model TicketWave.Pages.Events.EditModel
-
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Event";
 }
 
-<h1>Edit</h1>
+<h1>Edit Event</h1>
 
-<h4>EventTickets</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="EventTickets.EventId" />
-            <div class="form-group">
-                
-                <label asp-for="EventTickets.EventListUserID" class="control-label"></label>
-                <input asp-for="EventTickets.EventListUserID" class="form-control" />
-                <span asp-validation-for="EventTickets.EventListUserID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="EventTickets.EventDateTime" class="control-label"></label>
-                <input asp-for="EventTickets.EventDateTime" class="form-control" />
-                <span asp-validation-for="EventTickets.EventDateTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="EventTickets.EventName" class="control-label"></label>
-                <input asp-for="EventTickets.EventName" class="form-control" />
-                <span asp-validation-for="EventTickets.EventName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="EventTickets.EventLocation" class="control-label"></label>
-                <input asp-for="EventTickets.EventLocation" class="form-control" />
-                <span asp-validation-for="EventTickets.EventLocation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="EventTickets.EventTicketPrice" class="control-label"></label>
-                <input asp-for="EventTickets.EventTicketPrice" class="form-control" />
-                <span asp-validation-for="EventTickets.EventTicketPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="EventTickets.EventNumOfTicket" class="control-label"></label>
-                <input asp-for="EventTickets.EventNumOfTicket" class="form-control" />
-                <span asp-validation-for="EventTickets.EventNumOfTicket" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="EventTickets.EventUserContactEmail" class="control-label"></label>
-                <input asp-for="EventTickets.EventUserContactEmail" class="form-control" />
-                <span asp-validation-for="EventTickets.EventUserContactEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="EventTickets.EventDescription" class="control-label"></label>
-                <input asp-for="EventTickets.EventDescription" class="form-control" />
-                <span asp-validation-for="EventTickets.EventDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                
-                <label asp-for="EventTickets.EventBuyerID" class="control-label"></label>
-                <input asp-for="EventTickets.EventBuyerID" class="form-control" />
-                <span asp-validation-for="EventTickets.EventBuyerID" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="EventTickets.EventBuyOfferAccepted" /> @Html.DisplayNameFor(model => model.EventTickets.EventBuyOfferAccepted)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<form method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="EventTickets.EventId" />
+
+    <div class="form-group">
+        <label asp-for="EventTickets.EventName"></label>
+        <input asp-for="EventTickets.EventName" class="form-control" />
     </div>
-</div>
 
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label asp-for="EventTickets.EventDateTime"></label>
+        <input asp-for="EventTickets.EventDateTime" class="form-control" type="datetime-local" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventTickets.EventLocation"></label>
+        <input asp-for="EventTickets.EventLocation" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventTickets.EventTicketPrice"></label>
+        <input asp-for="EventTickets.EventTicketPrice" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventTickets.EventNumOfTicket"></label>
+        <input asp-for="EventTickets.EventNumOfTicket" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventTickets.EventUserContactEmail"></label>
+        <input asp-for="EventTickets.EventUserContactEmail" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventTickets.EventDescription"></label>
+        <textarea asp-for="EventTickets.EventDescription" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EventTickets.ListingType"></label>
+        <select asp-for="EventTickets.ListingType" class="form-control">
+            <option value="Sell">Sell</option>
+            <option value="Buy">Buy</option>
+        </select>
+    </div>
+
+    <!-- Image Preview -->
+    @if (!string.IsNullOrEmpty(Model.EventTickets.ImageFileName))
+    {
+        <div class="mb-3">
+            <label class="form-label">Current Image</label><br />
+            <img src="~/images/events/@Model.EventTickets.ImageFileName"
+                alt="Event image"
+                class="img-fluid"
+                style="max-height: 300px; object-fit: contain;" />
+        </div>
+    }
+    else
+    {
+        <div class="mb-3 text-muted">No image uploaded yet.</div>
+    }
+
+    <!-- Image Upload -->
+    <div class="form-group">
+        <label for="UploadImage">Upload New Image</label>
+        <input type="file" asp-for="UploadImage" class="form-control" />
+        <span asp-validation-for="UploadImage" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+    <a asp-page="./Index" class="btn btn-secondary mt-3">Cancel</a>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

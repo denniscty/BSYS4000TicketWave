@@ -30,8 +30,15 @@ namespace TicketWave.Pages.Events
             if (id == null)
                 return NotFound();
 
-            EventTickets = await _context.EventTickets
+            var eventtickets = await _context.EventTickets
                 .FirstOrDefaultAsync(m => m.EventId == id);
+
+            if (eventtickets == null)
+            {
+                return NotFound();
+            }
+
+            EventTickets = eventtickets;
 
             if (EventTickets == null)
                 return NotFound();
@@ -55,7 +62,10 @@ namespace TicketWave.Pages.Events
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId == null)
-                return Unauthorized();
+            {
+                TempData["OfferError"] = "You must be logged in to make an offer.";
+                return RedirectToPage("/Account/Login", new { area = "", returnUrl = Url.Page("/Events/Details", new { id }) });
+            }
 
             var result = await _offerService.TrySubmitOfferAsync(id, userId);
 

@@ -22,16 +22,7 @@
 <div class="row mt-4">
     <!-- Left Column: Image -->
     <div class="col-md-6">
-        @if (!string.IsNullOrEmpty(Model.EventTickets.ImageFileName))
-        {
-            <img src="/images/events/@Model.EventTickets.ImageFileName"
-                 class="img-fluid @(Model.ShouldGreyscaleImage ? "greyscale" : "")"
-                 alt="@Model.EventTickets.EventName" />
-        }
-        else
-        {
-            <img src="/images/placeholder.png" class="img-fluid greyscale" alt="No image available" />
-        }
+        @await Html.PartialAsync("_EventImage", (Model.EventTickets.ImageFileName, Model.ShouldGreyscaleImage))
     </div>
 
     <!-- Right Column: Event Details -->

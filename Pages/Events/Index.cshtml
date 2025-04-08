@@ -1,37 +1,73 @@
 ﻿@page
 @model TicketWave.Pages.Events.IndexModel
 @{
-    ViewData["Title"] = "Browse Events";
+    ViewData["Title"] = "Event Listings";
 }
 
-<h1>Events</h1>
+<h1>Browse Events</h1>
 
-<form method="get" class="mb-4">
-    <input type="text" name="SearchString" value="@Model.SearchString" class="form-control" placeholder="Search events..." />
+<form method="get" class="mb-4 row g-2 align-items-end">
+    <div class="col-md-4">
+        <label class="form-label">Search</label>
+        <input type="text" name="SearchString" value="@Model.SearchString" class="form-control" placeholder="Search events..." />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Sort by</label>
+        <select name="SortOrder" class="form-select">
+            <option value="date_asc" selected="@(Model.SortOrder == "date_asc")">Date (Earliest)</option>
+            <option value="date_desc" selected="@(Model.SortOrder == "date_desc")">Date (Latest)</option>
+            <option value="name_asc" selected="@(Model.SortOrder == "name_asc")">Name (A-Z)</option>
+            <option value="name_desc" selected="@(Model.SortOrder == "name_desc")">Name (Z-A)</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Show Expired</label>
+        <input type="checkbox" name="ShowExpired" class="form-check-input" value="true" @(Model.ShowExpired ? "checked" : null) />
+    </div>
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-primary">Apply</button>
+    </div>
 </form>
 
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    @foreach (var ticket in Model.EventTickets)
-    {
-        <div class="col">
-            <div class="card shadow-sm h-100">
-                @if (!string.IsNullOrEmpty(ticket.ImageFileName))
-                {
-                    <img src="~/images/events/@ticket.ImageFileName" class="card-img-top" style="height: 200px; object-fit: cover;" />
-                }
-
-                <div class="card-body">
-                    <h5 class="card-title">@ticket.EventName</h5>
-                    <p class="card-text text-muted">@ticket.EventLocation</p>
-                    <p class="card-text">@ticket.EventDateTime.ToShortDateString()</p>
-                    <p class="card-text">
-                        <strong>$@ticket.EventTicketPrice</strong> &mdash;
-                        <span class="badge bg-@(ticket.ListingType == "Buy" ? "info" : "success")">@ticket.ListingType</span>
-                    </p>
-
-                    <a asp-page="Details" asp-route-id="@ticket.EventId" class="btn btn-primary">View Details</a>
+@if (!Model.EventTickets.Any())
+{
+    <p class="text-muted">No events found.</p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var ticket in Model.EventTickets)
+        {
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    @await Html.PartialAsync("_EventImage", (
+                        ticket.ImageFileName,
+                        ticket.EventDateTime < DateTime.UtcNow || ticket.EventBuyOfferAccepted
+                    ))
+                    <div class="card-body">
+                        <h5 class="card-title">@ticket.EventName</h5>
+                        <p class="card-text text-muted">@ticket.EventLocation</p>
+                        <p class="card-text">@ticket.EventDateTime.ToShortDateString()</p>
+                        <p class="card-text">
+                            <strong>$@ticket.EventTicketPrice</strong> &mdash;
+                            <span class="badge bg-@(ticket.ListingType == "Buy" ? "info" : "success")">@ticket.ListingType</span>
+                        </p>
+                        <p class="card-text small">Listed by <strong>@ticket.ListingUser?.UserName</strong></p>
+                        <a asp-page="Details" asp-route-id="@ticket.EventId" class="btn btn-primary">View Details</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+
+    <nav class="mt-4">
+        <ul class="pagination">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                    <a class="page-link" asp-page="Index" asp-route-SearchString="@Model.SearchString" asp-route-SortOrder="@Model.SortOrder" asp-route-ShowExpired="@Model.ShowExpired" asp-route-Page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

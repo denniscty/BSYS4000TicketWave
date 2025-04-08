@@ -63,6 +63,7 @@
     <div class="form-group">
         <label>Upload Image</label>
         <input type="file" asp-for="UploadImage" class="form-control" />
+        <span asp-validation-for="UploadImage" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">Create</button>

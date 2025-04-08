@@ -9,6 +9,9 @@ public class EventTickets
     [Key]
     public int EventId { get; set; }
     public string EventListUserID { get; set; } = string.Empty; // Seller ID
+    [ForeignKey("EventListUserID")]
+    public User? ListingUser { get; set; }
+
     public string? EventBuyerID { get; set; } // Buyer ID
 
     //[ForeignKey("EventListUserID")]
@@ -35,6 +38,7 @@ public class EventTickets
     [Display(Name = "How many tickets?")]
     public int EventNumOfTicket { get; set; }
 
+    [Display(Name = "email address that will be used by others to contact you")]
     public string? EventUserContactEmail { get; set; }
 
     [Display(Name = "Enter an informative description of the event")]

@@ -1,0 +1,17 @@
+@model (string? ImageFileName, bool ShouldGreyscale)
+
+@{
+    var (fileName, greyscale) = Model;
+
+    var imagePath = !string.IsNullOrEmpty(fileName)
+        ? $"/images/events/{fileName}"
+        : $"/images/stock/stock{new Random().Next(1, 6)}.jpg";
+
+    var greyscaleClass = greyscale ? "greyscale" : "";
+}
+<img src="@imagePath"
+     class="img-fluid card-img-top object-fit-cover @greyscaleClass"
+     style="height: 200px; width: 100%; object-fit: cover;"
+     alt="Event image" />
+
+

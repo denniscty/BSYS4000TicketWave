@@ -38,6 +38,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<OfferService>();
 
+builder.Services.AddScoped<ImageUploadService>();
+
 // -------------------
 // 🔧 Build App
 // -------------------
@@ -47,7 +49,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    SeedData.Initialize(services);
+    await SeedData.Initialize(services);
 }
 
 // -------------------

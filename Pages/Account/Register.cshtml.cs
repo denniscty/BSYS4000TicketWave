@@ -45,14 +45,14 @@ namespace TicketWave.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            Console.WriteLine($"REGISTRATION ATTEMPT: {Input.UserName}");
+            //Console.WriteLine($"REGISTRATION ATTEMPT: {Input.UserName}");
 
             if (!ModelState.IsValid)
             {
-                Console.WriteLine("ModelState is invalid.");
+                //Console.WriteLine("ModelState is invalid.");
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
                 {
-                    Console.WriteLine("Model validation error: " + error.ErrorMessage);
+                    //Console.WriteLine("Model validation error: " + error.ErrorMessage);
                 }
                 return Page();
             }
@@ -61,7 +61,7 @@ namespace TicketWave.Pages.Account
             var existingUser = await _userManager.FindByNameAsync(Input.UserName);
             if (existingUser != null)
             {
-                Console.WriteLine("Duplicate registration attempt.");
+                //Console.WriteLine("Duplicate registration attempt.");
                 ModelState.AddModelError("Input.UserName", "Username is already taken.");
                 return Page();
             }
@@ -77,15 +77,15 @@ namespace TicketWave.Pages.Account
 
             if (result.Succeeded)
             {
-                Console.WriteLine("User registered successfully.");
+                //Console.WriteLine("User registered successfully.");
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToPage("/Index");
             }
 
-            Console.WriteLine("User registration failed:");
+            //Console.WriteLine("User registration failed:");
             foreach (var error in result.Errors)
             {
-                Console.WriteLine(" - " + error.Description);
+                //Console.WriteLine(" - " + error.Description);
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 

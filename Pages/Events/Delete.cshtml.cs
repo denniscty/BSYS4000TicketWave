@@ -25,8 +25,16 @@ namespace TicketWave.Pages.Events
                 return NotFound();
 
             var eventTickets = await _context.EventTickets.FirstOrDefaultAsync(m => m.EventId == id);
+
             if (eventTickets == null)
                 return NotFound();
+
+            // Prevent deleting if event is in the past
+            if (eventTickets.EventDateTime < DateTime.UtcNow)
+            {
+                TempData["DeleteError"] = "You cannot delete an event that has already passed.";
+                return RedirectToPage("./Index");
+            }
 
             EventTickets = eventTickets;
             return Page();
@@ -38,13 +46,24 @@ namespace TicketWave.Pages.Events
                 return NotFound();
 
             var eventTickets = await _context.EventTickets.FindAsync(id);
-            if (eventTickets != null)
+            if (eventTickets == null)
+                return NotFound();
+
+            // ✅ BLOCK IF AN OFFER HAS BEEN ACCEPTED
+            bool hasAccepted = await _context.EventOffers.AnyAsync(o =>
+                o.EventId == id && o.Status == OfferStatus.Accepted);
+
+            if (hasAccepted)
             {
-                _context.EventTickets.Remove(eventTickets);
-                await _context.SaveChangesAsync();
+                TempData["DeleteError"] = "This event has an accepted offer and cannot be deleted.";
+                return RedirectToPage("./Index");
             }
+
+            _context.EventTickets.Remove(eventTickets);
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }
+
     }
 }

@@ -1,0 +1,86 @@
+@page
+@model TicketWave.Pages.Events.MyEventsModel
+@{
+    ViewData["Title"] = "My Events";
+}
+
+<h2 class="mb-4">My Listed Events</h2>
+
+@if (TempData["EditError"] is string editErr)
+{
+    <div class="alert alert-warning">@editErr</div>
+}
+@if (TempData["DeleteError"] is string delErr)
+{
+    <div class="alert alert-danger">@delErr</div>
+}
+
+<form method="get" class="mb-4">
+    <div class="input-group" style="max-width: 300px;">
+        <select name="filter" class="form-select" onchange="this.form.submit()">
+            <option value="">All Listings</option>
+            <option value="Sell" selected="@("Sell" == Model.Filter)">Selling</option>
+            <option value="Buy" selected="@("Buy" == Model.Filter)">Buying</option>
+        </select>
+        <button type="submit" class="btn btn-outline-secondary">Filter</button>
+    </div>
+</form>
+
+@if (!Model.EventTickets.Any())
+{
+    <p class="text-muted">You haven’t listed any events yet.</p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var ticket in Model.EventTickets)
+        {
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    @await Html.PartialAsync("_EventImage", (
+                        ticket.ImageFileName,
+                        ticket.EventDateTime < DateTime.Now || ticket.EventBuyOfferAccepted
+                    ))
+
+                    <div class="card-body">
+                        <h5 class="card-title">@ticket.EventName</h5>
+                        @if (ticket.EventDateTime < DateTime.UtcNow)
+                        {
+                            <span class="badge bg-secondary">Expired</span>
+                        }
+                        <p class="text-muted">@ticket.EventLocation</p>
+                        <p>@ticket.EventDateTime.ToShortDateString()</p>
+                        <p>
+                            <strong>$@ticket.EventTicketPrice</strong> &mdash;
+                            <span class="badge bg-@(ticket.ListingType == "Buy" ? "info" : "success")">@ticket.ListingType</span>
+                        </p>
+
+                        @if (ticket.EventOffers != null && ticket.EventOffers.Any())
+                        {
+                            <span class="badge bg-secondary">Offers: @ticket.EventOffers.Count</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">No offers yet</span>
+                        }
+
+                        <div class="mt-3 d-flex gap-2">
+                            <a asp-page="Details" asp-route-id="@ticket.EventId" class="btn btn-sm btn-outline-primary">View</a>
+                            @if (ticket.EventDateTime >= DateTime.UtcNow)
+                            {
+                                <a asp-page="Edit" asp-route-id="@ticket.EventId" class="btn btn-sm btn-outline-success">Edit</a>
+                                <a asp-page="Delete" asp-route-id="@ticket.EventId" class="btn btn-sm btn-outline-danger">Delete</a>
+
+                            }
+                            else
+                            {
+                                <div class="mt-3 text-muted small">This event has expired</div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
