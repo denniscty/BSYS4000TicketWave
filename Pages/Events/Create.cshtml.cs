@@ -46,6 +46,8 @@ namespace TicketWave.Pages.Events
 
             // Set seller ID from logged-in user
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            EventTickets.EventListUserID = userId ?? throw new InvalidOperationException("User ID is null");
+
             if (userId == null)
             {
                 //Console.WriteLine("❌ No user ID found");
@@ -79,7 +81,7 @@ namespace TicketWave.Pages.Events
             }            
 
             // blocks the creation of past event
-            if (EventTickets.EventDateTime < DateTime.UtcNow)
+            if (EventTickets.EventDateTime.Date < DateTime.Now.Date)
             {
                 ModelState.AddModelError("EventTickets.EventDateTime", "You cannot list an event in the past.");
                 return Page();
@@ -95,8 +97,23 @@ namespace TicketWave.Pages.Events
             //{
                 //Console.WriteLine("❌ DB save failed: " + ex.Message);
             //}
+            Console.WriteLine($"📝 Creating event: {EventTickets.EventName}");
+            Console.WriteLine($"📅 Date: {EventTickets.EventDateTime}");
+            Console.WriteLine($"👤 UserId: {EventTickets.EventListUserID}");
+            Console.WriteLine($"✔ OfferAccepted: {EventTickets.EventBuyOfferAccepted}");
+            Console.WriteLine($"🎯 ListingType: {EventTickets.ListingType}");
 
-            return RedirectToPage("Index");
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                    Console.WriteLine($"❌ Validation Error: {error.ErrorMessage}");
+
+                return Page();
+            }
+
+            _context.EventTickets.Add(EventTickets);
+            await _context.SaveChangesAsync();
+            return RedirectToPage("Index", new { PageNumber = 1 });
         }
     }
 }

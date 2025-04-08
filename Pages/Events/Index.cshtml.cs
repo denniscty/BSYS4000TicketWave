@@ -43,7 +43,9 @@ namespace TicketWave.Pages.Events
 
             if (!ShowExpired)
             {
-                query = query.Where(e => e.EventDateTime >= DateTime.UtcNow);
+                var today = DateTime.UtcNow.Date;
+                query = query.Where(e => e.EventDateTime.Date >= today);
+
             }
 
             if (!string.IsNullOrEmpty(SearchString))

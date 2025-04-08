@@ -31,6 +31,7 @@ namespace TicketWave.Pages.Events
                 return NotFound();
 
             var eventtickets = await _context.EventTickets
+                .Include(e => e.ListingUser)
                 .FirstOrDefaultAsync(m => m.EventId == id);
 
             if (eventtickets == null)

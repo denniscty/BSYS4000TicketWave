@@ -44,7 +44,7 @@ public class EventTickets
     [Display(Name = "Enter an informative description of the event")]
     public string? EventDescription { get; set; }
 
-    public bool EventBuyOfferAccepted { get; set; }
+    public bool EventBuyOfferAccepted { get; set; } = false;
 
     public ICollection<EventOffer> EventOffers { get; set; } = new List<EventOffer>();
 

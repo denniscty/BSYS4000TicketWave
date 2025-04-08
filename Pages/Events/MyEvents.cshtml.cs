@@ -23,19 +23,27 @@ namespace TicketWave.Pages.Events
         public async Task<IActionResult> OnGetAsync()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-                return RedirectToPage("/Account/Login");
 
-            var query = _context.EventTickets
-                .Include(e => e.EventOffers)
-                .Where(e => e.EventListUserID == userId);
+            Console.WriteLine($"🧾 Current User ID: {userId}");
+            //if (userId == null)
+            //    return RedirectToPage("/Account/Login");
 
-            if (!string.IsNullOrEmpty(Filter))
-                query = query.Where(e => e.ListingType == Filter);
+            //var query = _context.EventTickets
+            //    .Include(e => e.EventOffers)
+            //    .Where(e => e.EventListUserID == userId);
 
-            EventTickets = await query
+            //if (!string.IsNullOrEmpty(Filter))
+            //    query = query.Where(e => e.ListingType == Filter);
+
+            if (string.IsNullOrEmpty(userId))
+                return Challenge();
+
+            EventTickets = await _context.EventTickets
+                .Where(e => e.EventListUserID == userId)
                 .OrderByDescending(e => e.EventDateTime)
                 .ToListAsync();
+
+            Console.WriteLine($"🔍 Found {EventTickets.Count} events for user.");
 
             return Page();
         }

@@ -47,8 +47,13 @@
             <dt class="col-sm-4">Tickets Available</dt>
             <dd class="col-sm-8">@Model.EventTickets.EventNumOfTicket</dd>
 
-            <dt class="col-sm-4">Contact Email</dt>
-            <dd class="col-sm-8">@Model.EventTickets.EventUserContactEmail</dd>
+            <dt class="col-sm-4">Posting User</dt>
+            <dd class="col-sm-8">
+                @if (Model.EventTickets.ListingUser != null)
+                {
+                    <strong>@Model.EventTickets.ListingUser.UserName</strong>
+                }
+            </dd>
 
             <dt class="col-sm-4">Description</dt>
             <dd class="col-sm-8">@Model.EventTickets.EventDescription</dd>
