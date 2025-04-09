@@ -1,0 +1,20 @@
+@model TicketWave.Pages.Events.IndexModel
+
+<nav class="mt-4 d-flex justify-content-center">
+    <ul class="pagination">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            var isActive = i == Model.CurrentPage ? "active" : "";
+            <li class="page-item @isActive">
+                <a class="page-link"
+                   asp-page="./Index"
+                   asp-route-PageNumber="@i"
+                   asp-route-SearchString="@Model.SearchString"
+                   asp-route-SortOrder="@Model.SortOrder"
+                   asp-route-ShowExpired="@Model.ShowExpired">
+                    @i
+                </a>
+            </li>
+        }
+    </ul>
+</nav>

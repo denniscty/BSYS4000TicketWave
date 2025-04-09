@@ -57,8 +57,8 @@ namespace TicketWave.Pages.Events
 
             query = SortOrder switch
             {
-                "name_asc" => query.OrderBy(e => e.EventName.ToLower()),
-                "name_desc" => query.OrderByDescending(e => e.EventName.ToLower()),
+                "name_asc" => query.OrderBy(e => e.EventName != null ? e.EventName.ToLower() : string.Empty),
+                "name_desc" => query.OrderByDescending(e => e.EventName != null ? e.EventName.ToLower() : string.Empty),
                 "date_desc" => query.OrderByDescending(e => e.EventDateTime),
                 _ => query.OrderBy(e => e.EventDateTime), // default date_asc
             };

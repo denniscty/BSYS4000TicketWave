@@ -28,3 +28,12 @@ body {
 .object-fit-cover {
   object-fit: cover;
 }
+
+.hero {
+  position: relative;
+  text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+}
