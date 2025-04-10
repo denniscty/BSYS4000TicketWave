@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Identity;
@@ -5,6 +6,7 @@ using System.Threading.Tasks;
 using TicketWave.Data;
 using TicketWave.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace TicketWave.Pages.Account
 {
@@ -64,21 +66,28 @@ namespace TicketWave.Pages.Account
                 return Page();
             }
 
-            var result = await _signInManager.PasswordSignInAsync(user, Input.Password, isPersistent: false, lockoutOnFailure: false);
-
-            if (result.Succeeded)
+            if (await _userManager.CheckPasswordAsync(user, Input.Password))
             {
-                // If login succeeds, redirect to the home page or another page
-                //Console.WriteLine("Login success!");
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Role, user.Role ?? "User")
+                };
+
+                var identity = new ClaimsIdentity(claims, IdentityConstants.ApplicationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
+
                 return RedirectToPage("/Events/Index");
             }
             else
             {
-                // If password is wrong, show an error
-                //Console.WriteLine("Login failed.");
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return Page();
             }
+
         }
     }
 }

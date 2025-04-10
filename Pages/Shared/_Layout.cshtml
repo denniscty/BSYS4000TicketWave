@@ -11,11 +11,15 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
     <header class="navbar navbar-expand-lg navbar-light bg-light mb-4 px-4">
         <a class="navbar-brand" asp-page="/Index">🎟️ TicketWave</a>
-
+        @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+        {
+            <a class="nav-link" asp-page="/Admin/Dashboard">Admin</a>
+        }
         <div class="ml-auto d-flex align-items-center gap-3">
             <a class="nav-link" asp-page="/Events/Index">Main Page</a>
             @if (User.Identity?.IsAuthenticated == true)
