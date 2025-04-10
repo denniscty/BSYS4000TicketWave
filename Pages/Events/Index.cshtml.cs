@@ -39,7 +39,7 @@ namespace TicketWave.Pages.Events
             var query = _context.EventTickets
                 .Include(e => e.ListingUser)
                 .Include(e => e.EventOffers)
-                .Where(e => !e.EventBuyOfferAccepted); // Hide accepted events
+                .Where(e => !e.EventBuyOfferAccepted && !e.IsFlaggedByAdmin); // Hide accepted events or events banned by admin
 
             if (!ShowExpired)
             {
