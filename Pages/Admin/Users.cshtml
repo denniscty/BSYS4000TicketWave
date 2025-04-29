@@ -1,0 +1,50 @@
+@page
+@model TicketWave.Pages.Admin.UsersModel
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container py-4">
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-shield-lock me-2" viewBox="0 0 16 16">
+            <path d="M5.5 9a1.5 1.5 0 0 1 3 0v1a.5.5 0 0 1-1 0V9a.5.5 0 0 0-1 0v1a.5.5 0 0 1-1 0V9z"/>
+            <path d="M8 0c-.69 0-1.342.073-1.967.21a1 1 0 0 0-.713.662C4.744 2.048 4 3.3 4 5c0 4.118 3.134 7.75 3.524 8.25a1 1 0 0 0 1.473 0C8.866 12.75 12 9.118 12 5c0-1.7-.744-2.952-1.32-4.128a1 1 0 0 0-.713-.662A13.035 13.035 0 0 0 8 0zm0 1c.573 0 1.132.06 1.673.173.254.05.48.21.585.45C10.744 2.952 11 4.157 11 5c0 3.657-2.677 6.97-3 7.371C7.677 11.97 5 8.657 5 5c0-.843.256-2.048.742-3.377a1 1 0 0 1 .585-.45A12.035 12.035 0 0 1 8 1z"/>
+        </svg>
+        <div>
+            You are in the <strong>Admin User Management</strong> panel. Changes here can affect all user access and event visibility.
+        </div>
+    </div>
+
+    <h2 class="mb-3">User List</h2>
+
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>
+                    <form method="post"
+                        asp-page-handler="Delete"
+                        asp-route-userId="@user.Id"
+                        onsubmit="return confirm('Are you sure you want to delete this user? This action is irreversible.')">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

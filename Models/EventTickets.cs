@@ -54,4 +54,7 @@ public class EventTickets
     [Display(Name = "Uploaded Image")]
     public string? ImageFileName { get; set; }
 
+    public bool IsFlaggedByAdmin { get; set; } = false;
+
+
 }

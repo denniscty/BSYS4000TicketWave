@@ -1,0 +1,13 @@
+@page
+@model TicketWave.Pages.Admin.DashboardModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1 class="mb-4">👑 Admin Dashboard</h1>
+
+<div class="list-group">
+    <a asp-page="Users" class="list-group-item list-group-item-action">Manage Users</a>
+    <a asp-page="Events" class="list-group-item list-group-item-action">Manage Events</a>
+    <!--<a asp-page="FlaggedEvents" class="list-group-item list-group-item-action">View Flagged Events</a>-->
+</div>

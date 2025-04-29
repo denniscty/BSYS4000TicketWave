@@ -39,7 +39,7 @@ namespace TicketWave.Pages.Events
                 return Challenge();
 
             EventTickets = await _context.EventTickets
-                .Where(e => e.EventListUserID == userId)
+                .Where(e => e.EventListUserID == userId && !e.IsFlaggedByAdmin)
                 .OrderByDescending(e => e.EventDateTime)
                 .ToListAsync();
 

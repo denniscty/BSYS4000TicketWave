@@ -11,24 +11,43 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <body>
     <header class="navbar navbar-expand-lg navbar-light bg-light mb-4 px-4">
         <a class="navbar-brand" asp-page="/Index">🎟️ TicketWave</a>
 
-        <div class="ml-auto d-flex align-items-center gap-3">
-            <a class="nav-link" asp-page="/Events/Index">Main Page</a>
+        <div class="ms-auto d-flex align-items-center gap-3">
+            <span class="navbar-text">Hello, </span>
             @if (User.Identity?.IsAuthenticated == true)
             {
-                <span class="navbar-text">Hello, @User.Identity.Name!</span>
-                <a class="btn btn-outline-primary" asp-page="/Events/Create">List Event</a>
-                <a class="nav-link" asp-page="/Events/MyEvents">My Events</a>
-                <a class="nav-link" asp-page="/Offers/MyOffers">My Offers</a>
-                <a class="nav-link @(ViewContext.ActionDescriptor.DisplayName!.Contains("OffersInbox") ? "active" : "")"
-   asp-page="/Offers/OffersInbox">Offers Inbox</a>
-                <form method="post" asp-page="/Account/Logout" class="d-inline">
-                    <button type="submit" class="btn btn-outline-danger">Logout</button>
-                </form>
+                <span class="navbar-text">@User.Identity.Name!</span>
+            }
+            else
+            {
+                <span class="navbar-text">Guest!</span>
+            }
+            <a class="btn btn-outline-primary @(ViewContext.ActionDescriptor.DisplayName!.Contains("Main Page") ? "active" : "")"
+                asp-page="/Events/Index">Main Page</a>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-outline-danger" asp-page="/Admin/Dashboard">Admin</a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-primary" asp-page="/Events/Create">List Event</a>
+                    <a class="btn btn-outline-primary" asp-page="/Events/MyEvents">My Events</a>
+                    <a class="btn btn-outline-primary" asp-page="/Offers/MyOffers">My Offers</a>
+                    <a class="btn btn-outline-primary @(ViewContext.ActionDescriptor.DisplayName!.Contains("OffersInbox") ? "active" : "")"
+                        asp-page="/Offers/OffersInbox">Offers Inbox</a>
+                }
+            <form method="post"
+                asp-page="/Account/Logout"
+                class="d-inline">
+                <button type="submit" class="btn btn-outline-danger">Logout</button>
+            </form>
             }
             else
             {

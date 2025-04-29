@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using TicketWave.Data;
 using TicketWave.Models;
 using TicketWave.Services;
+using TicketWave.Services.Admin;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +36,14 @@ builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
         options.LogoutPath = "/Account/Logout";
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
+
+builder.Services.AddScoped<DeleteUserService>();
+
+builder.Services.AddScoped<DeleteEventService>();
 
 builder.Services.AddScoped<OfferService>();
 

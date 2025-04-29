@@ -42,6 +42,33 @@ namespace TicketWave.Data
                 }
             }
 
+            // ✅ Seed Admin Users
+            if (await userManager.FindByNameAsync("AdminUser") == null)
+            {
+                var admin = new User
+                {
+                    UserName = "AdminUser",
+                    Email = "admin@ticketwave.com",
+                    Role = "Admin"
+                };
+
+                var result = await userManager.CreateAsync(admin, "Admin@123");
+
+                if (result.Succeeded)
+                {
+                    Console.WriteLine("👑 Admin user seeded.");
+                }
+                else
+                {
+                    Console.WriteLine("❌ Admin seeding failed:");
+                    foreach (var error in result.Errors)
+                    {
+                        Console.WriteLine($"- {error.Description}");
+                    }
+                }
+            }
+
+
             // ✅ Seed EventTickets
             if (!context.EventTickets.Any())
             {
