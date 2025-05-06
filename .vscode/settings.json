@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin\\Release\\net9.0\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/338fc77b-5d5f-4fa5-94e7-7db0c6b0f51e/resourceGroups/appsvc_windows_canadacentral/providers/Microsoft.Web/sites/TicketWave"
+}
